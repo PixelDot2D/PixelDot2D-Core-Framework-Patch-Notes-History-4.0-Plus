@@ -270,11 +270,7 @@ Traverses the waypoint sequence normally, then dynamically recalculates all wayp
 This allows the movement pattern to maintain an uninterrupted, infinitely extending trajectory rather than restarting from the original waypoint positions.
 
 
-
-
---------------------------------------
-
-
+---
 
 
 ## Combat Updates <a name="combat-updates-patch-40"></a>
@@ -303,18 +299,12 @@ The result is a highly composable weapon system where new behaviors can be layer
 **Base Class:** `Base_State_WeaponizedModule_Aiming`
 
 #### Look At Source
-
-Tracks the spatial delta between the raw virtual origin and the final calculated execution point.
-
-Includes an **Inverse** option for easily switching between inward-facing and outward-facing behavior.
+- Tracks the spatial delta between the raw virtual origin and the final calculated execution point.
+- Includes an **Inverse** option for easily switching between inward-facing and outward-facing behavior.
 
 #### Look At Target
-
-Tracks dynamically supplied target coordinates through:
-
-`Func<(bool isValidCoordinates, Vector2 coordinates)>`
-
-Target coordinates are supplied through `SetTargetCoordinatesAction()`.
+- Tracks dynamically supplied target coordinates through: `Func<(bool isValidCoordinates, Vector2 coordinates)>`
+- Target coordinates are supplied through `SetTargetCoordinatesAction()`.
 
 This allows aiming behavior to remain completely decoupled from direct scene-object references while supporting dynamically generated or externally managed target positions.
 
@@ -325,32 +315,23 @@ This allows aiming behavior to remain completely decoupled from direct scene-obj
 **Base Class:** `Base_State_WeaponizedModule_VirtualTransform`
 
 #### Orbit Around Source
-
-Provides continuous orbital movement using raw angle accumulation rather than direct Transform dependencies.
-
-This allows the virtual execution point to maintain orbital motion without requiring a physical Transform to act as the underlying movement reference.
+- Provides continuous orbital movement using raw angle accumulation rather than direct Transform dependencies.
+- This allows the virtual execution point to maintain orbital motion without requiring a physical Transform to act as the underlying movement reference.
 
 #### Radius Anchored Orbit
-
-Projects a reference point along a relative vector toward a target.
-
-The system supports flexible `Vector2` radial profiles, allowing developers to create:
-
-- Asymmetrical paths
-- Skewed paths
-- Elliptical paths
+- Projects a reference point along a relative vector toward a target.
+- The system supports flexible `Vector2` radial profiles, allowing developers to create:
+  - Asymmetrical paths
+  - Skewed paths
+  - Elliptical paths
 
 #### Clamp 8-Directional
-
-Constrains placement vectors to a classic top-down eight-directional grid.
-
-This provides a clean directional filter for weapons or other systems that require discrete eight-way orientation.
+- Constrains placement vectors to a classic top-down eight-directional grid.
+- This provides a clean directional filter for weapons or other systems that require discrete eight-way orientation.
 
 #### Camera Position
-
-Anchors a virtual execution Transform to a specified camera position.
-
-Supports optional runtime positioning offsets for additional control over the final virtual execution position.
+- Anchors a virtual execution Transform to a specified camera position.
+- Supports optional runtime positioning offsets for additional control over the final virtual execution position.
 
 ---
 
@@ -363,10 +344,8 @@ Introduced a new unified execution architecture that replaces several legacy exe
 See the dedicated **[HitBox Execution System](#hitbox-execution-system-patch-40)** section below for the full architectural breakdown.
 
 #### Charge Gate
-
-Added a configurable charging gate that controls weapon execution based on accumulated charge.
-
-The charge progresses whenever `TryExecute` returns `true` and authorizes execution once the configured charge requirement has been completed.
+- Added a configurable charging gate that controls weapon execution based on accumulated charge.
+- The charge progresses whenever `TryExecute` returns `true` and authorizes execution once the configured charge requirement has been completed.
 
 Supported behaviors include:
 
@@ -379,26 +358,20 @@ Supported behaviors include:
 ### Contextual Cooldowns
 
 #### `State_WeaponizedModule_ExecutionGate_Cooldown`
-
-Added contextual cooldown behavior through a new execution-lock configuration.
+- Added contextual cooldown behavior through a new execution-lock configuration.
 
 #### Execution-Locked Cooldowns
-
-When enabled, the cooldown timer pauses while the associated execution is active.
-
-This is particularly useful for:
-
-- Persistent field deployments.
-- Long-duration HitBox executions.
-- Delayed-delivery weapons.
+- When enabled, the cooldown timer pauses while the associated execution is active.
+- This is particularly useful for:
+  - Persistent field deployments.
+  - Long-duration HitBox executions.
+  - Delayed-delivery weapons.
 
 With execution locking enabled, the cooldown does not continue progressing until the active execution has finished.
 
 #### Parallel Cooldowns
-
-When execution locking is disabled, the cooldown continues counting down while the execution remains active.
-
-This preserves the traditional cooldown behavior, allowing the cooldown and execution processes to run in parallel.
+- When execution locking is disabled, the cooldown continues counting down while the execution remains active.
+- This preserves the traditional cooldown behavior, allowing the cooldown and execution processes to run in parallel.
 
 
 
