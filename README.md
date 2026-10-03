@@ -18,6 +18,24 @@ Full Patch Note History for the PixelDot2D Core Framework, beginning with **Vers
 >
 > **[PixelDot2D Core Framework Patch Notes History - Pre 4.0](https://github.com/PixelDot2D/PixelDot2D-Core-Framework-Patch-Notes-History-Pre-4.0)**
 
+---
+
+# Table Of Contents
+
+- [Version 4.0 Overview](#version-40-overview)
+- [Patch 4.0](#patch-40)
+  - [Breaking Changes & Migration Notes](#breaking-changes--migration-notes-patch-40)
+    - [Unity Version Requirement](#unity-version-requirement-patch-40)
+    - [Older Engine Versions](#older-engine-versions-patch-40)
+  - [Core Framework & Performance](#core-framework--performance-patch-40)
+  - [Core Updates](#core-updates-patch-40)
+  - [Movement Updates](#movement-updates-patch-40)
+  - [Combat Updates](#combat-updates-patch-40)
+  - [ModularCharacter Updates](#modularcharacter-updates-patch-40)
+  - [Items & Crafting Updates](#items--crafting-updates-patch-40)
+  - [Inventory Manager Updates](#inventory-manager-updates-patch-40)
+  - [Merchant & Economy Updates](#merchant--economy-updates-patch-40)
+
 
 ---
 
@@ -91,25 +109,6 @@ Before upgrading to Version 4.0, review the following:
 
 ---
 
-# Table Of Contents
-
-- [Version 4.0 Overview](#version-40-overview)
-- [Patch 4.0](#patch-40)
-  - [Breaking Changes & Migration Notes](#breaking-changes--migration-notes-patch-40)
-    - [Unity Version Requirement](#unity-version-requirement-patch-40)
-    - [Older Engine Versions](#older-engine-versions-patch-40)
-  - [Core Framework & Performance](#core-framework--performance-patch-40)
-  - [Core Updates](#core-updates-patch-40)
-  - [Movement Updates](#movement-updates-patch-40)
-  - [Combat Updates](#combat-updates-patch-40)
-  - [ModularCharacter Updates](#modularcharacter-updates-patch-40)
-  - [Items & Crafting Updates](#items--crafting-updates-patch-40)
-  - [Inventory Manager Updates](#inventory-manager-updates-patch-40)
-  - [Merchant & Economy Updates](#merchant--economy-updates-patch-40)
-
-
----
-
 # Patch 4.0 <a name="patch-40"></a>
 
 ## Breaking Changes & Migration Notes <a name="breaking-changes--migration-notes-patch-40"></a>
@@ -141,7 +140,24 @@ The framework's architectural direction also prepares the codebase to take advan
 
 ## Core Framework & Performance <a name="core-framework--performance-patch-40"></a>
 
-*Section coming next.*
+### Allocation-Free Static Metadata
+
+Static validation arrays have been converted to `ReadOnlySpan<T>`-based static metadata where applicable.
+
+This eliminates unnecessary heap allocations by allowing the framework to reference read-only assembly metadata directly rather than creating runtime array instances.
+
+### Collection Reuse
+
+Internal state-tracking collections—including:
+
+- Lists
+- Dictionaries
+- HashSets
+
+have been refactored to utilize structural `readonly` fields where applicable.
+
+This reduces unnecessary allocations and improves collection reuse throughout the framework.
+
 
 
 ## Core Updates <a name="core-updates-patch-40"></a>
