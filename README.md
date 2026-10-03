@@ -254,6 +254,20 @@ Combat → SO → Weapons → Projectiles → Rotating
 
 This provides a ready-to-use reference for combining rotational movement with projectile behavior.
 
+### RB2DMovement_FollowPoints
+
+Added configurable waypoint iteration modes through `Enum_RB2DMovementFollowPointsLoop`.
+
+- Loop
+Traverses the waypoint array sequentially.
+Once the final waypoint is reached, traversal returns to element `0` and repeats the path.
+
+- PingPong
+Traverses the waypoint array forward until the final waypoint is reached, then reverses the traversal direction and moves back through the array.
+
+- Continuous
+Traverses the waypoint sequence normally, then dynamically recalculates all waypoint offsets relative to the final endpoint.
+This allows the movement pattern to maintain an uninterrupted, infinitely extending trajectory rather than restarting from the original waypoint positions.
 
 
 
