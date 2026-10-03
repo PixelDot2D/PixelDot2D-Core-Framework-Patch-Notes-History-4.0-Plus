@@ -33,7 +33,6 @@ Full Patch Note History for the PixelDot2D Core Framework, beginning with **Vers
   - [ModularCharacter Updates](#modularcharacter-updates-patch-40)
   - [Items & Crafting Updates](#items--crafting-updates-patch-40)
   - [Inventory Manager Updates](#inventory-manager-updates-patch-40)
-  - [Merchant & Economy Updates](#merchant--economy-updates-patch-40)
 
 
 ---
@@ -665,17 +664,209 @@ Changes include:
 > These are internal architectural changes and do not alter existing public API behavior.
 
 
+---
+
 
 ## Items & Crafting Updates <a name="items--crafting-updates-patch-40"></a>
 
-*Section coming next.*
+### New Feature: Crafting Stations
 
+Added a new decoupled C# `CraftingStation` component.
 
-## Inventory Manager Updates <a name="inventory-manager-updates-patch-40"></a>
+Crafting stations can be attached to virtually any object, including:
 
-*Section coming next.*
+- NPCs.
+- World interactables.
+- Portable containers.
+- Other custom objects.
 
+The system does not depend on object names or inheritance structures, allowing crafting functionality to be embedded into existing gameplay systems without requiring a specific object hierarchy.
 
-## Merchant & Economy Updates <a name="merchant--economy-updates-patch-40"></a>
+---
 
-*Section coming next.*
+### Dynamic Crafting Tables
+
+Crafting recipes can now be replaced at runtime through:
+
+`UpdateCraftingTable`
+
+This enables dynamic recipe progression, tier upgrades, and other systems that require crafting configurations to change during gameplay.
+
+---
+
+### Multi-Inventory Crafting
+
+The crafting system can simultaneously search:
+
+- A target destination inventory.
+- Multiple source inventories.
+
+This allows crafting systems to operate across distributed storage configurations without requiring all materials to exist within a single inventory.
+
+---
+
+### Distributed Material Consumption
+
+Required materials can be distributed across any number of source containers.
+
+For example, if 100 chests each contain 1 Wood and a recipe requires 100 Wood, the crafting system can:
+
+- Search the configured source inventories.
+- Verify that the required quantity is available.
+- Deduct the required materials across the containers.
+- Complete the crafting transaction.
+- Place the crafted item into the target inventory.
+
+The entire operation is handled as a single transaction.
+
+---
+
+## Inventory Manager Enhancements <a name="inventory-manager-updates-patch-40"></a>
+
+### `HasSpaceForItem`
+
+Added a defensive inventory capacity check that evaluates:
+
+- Empty inventory slots.
+- Existing partial stacks.
+
+The method returns `true` only when the requested quantity can be safely accommodated within the inventory.
+
+### `GetItemStackCount`
+
+Added aggregate item counting across multiple inventory slots.
+
+For example, ten individual potions distributed across ten different inventory slots will correctly return a total count of `10`.
+
+---
+
+## New Feature: Merchants & Currency <a name="merchant-and-currency-patch-40"></a>
+
+Version 4.0 introduces a new decentralized currency and merchant architecture.
+
+The system is designed to support arbitrary currency types without requiring modifications to the underlying transaction logic.
+
+### Currency Ledger
+
+The currency system uses an enum-keyed dictionary to track account balances.
+
+Developers can dynamically expand the system with additional token types without modifying the underlying ledger architecture.
+
+### Atomic Transactions
+
+Multi-currency transactions are fully validated before any account balance is modified.
+
+If the account cannot afford the complete transaction:
+
+- The transaction is rejected.
+- No partial deduction occurs.
+- Negative balances are not created.
+
+This ensures that multi-currency transactions remain fully atomic.
+
+---
+
+### Missing Currency Policies
+
+`Enum_CurrencyMissingAction` controls how the system handles currencies that are not currently being tracked.
+
+Supported behavior determines whether missing currencies are:
+
+- Discarded.
+- Automatically initialized.
+
+---
+
+### Resetting Currency State
+
+`ResetCurrencies` safely clears tracked balances and restores the baseline account state.
+
+This is useful during:
+
+- Save/load operations.
+- Player initialization.
+- State resets.
+
+---
+
+### Save-System Integration
+
+Currency accounts are fully integrated with the Core save system.
+
+Any object managing currency only needs to implement:
+
+`ISaveableAndLoadable`
+
+and forward its save/load lifecycle calls to the internal currency ledger.
+
+For example:
+
+```text
+_currencies.ISaveableAndLoadable_Save();
+```
+
+```text 
+_currencies.ISaveableAndLoadable_Load();
+ ```
+
+The currency system handles its own:
+
+- Thread-safe serialization.
+- Binary data mapping.
+- State restoration.
+
+No custom currency serialization system is required.
+
+---
+
+### Adaptive Merchant Economy
+
+The merchant system supports:
+
+- Single-currency pricing.
+- Multi-currency pricing.
+- Free products.
+
+#### Free Transactions
+
+A product with an empty cost dictionary is automatically treated as free.
+
+The transaction bypasses the currency deduction process without generating an error.
+
+#### ScriptableObject Pricing
+
+Merchant inventories and pricing structures can be configured through:
+
+`SO_MerchantTable`
+
+Designers can create complex multi-currency price structures directly through the Unity Inspector.
+
+#### Adding New Currencies
+
+Adding another currency requires only a new entry in:
+
+`Enum_Currency`
+
+The underlying ledger automatically expands to accommodate the new token type.
+
+#### Dynamic Cost Scaling
+
+Multi-currency prices automatically scale with transaction volume.
+
+Buy-back and sell operations calculate the complete aggregate cost before performing the atomic balance mutation.
+
+---
+
+### Integration Interfaces
+
+Four new interfaces provide a clean bridge between Unity components and backend C# systems:
+
+- `IMerchant`
+- `IInventory`
+- `ICurrency`
+- `ICraftingStation`
+
+These interfaces allow MonoBehaviours to expose their underlying data systems without creating direct architectural dependencies.
+
+For example, scene objects can use `TryGetComponent` to retrieve the appropriate interface and then access the underlying pure C# system without directly coupling the Unity component to the backend implementation.
+
