@@ -158,16 +158,89 @@ have been refactored to utilize structural `readonly` fields where applicable.
 
 This reduces unnecessary allocations and improves collection reuse throughout the framework.
 
+### 2D Rotation System
+
+Introduced a new high-efficiency 2D rotation extension suite designed to decouple 2D state and movement logic from Unity's default 3D Euler-angle conversion pipeline.
+
+#### `Transform.GetLocalRotation2D()`
+
+Added a pure math utility that reconstructs a 2D rotation angle directly from the underlying Quaternion components.
+
+**Features:**
+
+- Returns a continuous, normalized `0–360°` angle.
+- Bypasses the additional engine boundary involved with `transform.localEulerAngles.z`.
+- Reduces precision drift associated with repeated Quaternion-to-Euler conversions.
+
+#### `Transform.Rotate2D(float targetAngle)`
+
+Added an absolute 2D rotation setter that directly updates the underlying local rotation.
+
+This avoids unnecessary 3D rotation handling and prevents common gimbal-lock and axis-flipping artifacts associated with Euler-based rotation workflows.
+
+#### `Transform.Rotate2D(float speed, float deltaTime, float timeScale)`
+
+Added an incremental rotation overload for continuously rotating objects.
+
+### AnimationPlayer2D
+
+Animation sequence tracking has been refactored from a count-up system into a countdown-based system.
+
+#### Countdown Tracking
+
+The sequence counter now counts down toward zero as the animation queue progresses.
+
+When no animation is currently playing, the sequence returns:
+
+```text
+-1
+```
+This simplifies queue-state checks and makes event-driven logic easier to implement.
+Simplified Event Handling
+
+Developers can now use the m_OnFrameChange event to identify specific final animation sequences without needing to know how many sequences were originally added to the animation queue.
+
+For example:
+```text
+if (sequence == 0 && frame == 3)
+{
+    // Play footstep sound
+}
+```
+This allows developers to trigger events based directly on the current sequence and frame, without needing to calculate the original animation queue length.
+
+---
+
+### RB2DMovementManager <a name="movement-updates-patch-40"></a>
+
+#### Coordinate Delegate Refactor
+
+`GetCoordinatesDelegate` has been updated to return:
+
+```text
+(bool isValidCoordinates, Vector2 coordinates)
+```
+
+This architectural change removes the movement system's dependency on raw Unity `GameObject` references.
+
+Developers can now provide custom spatial data such as:
+
+- Tracking offsets
+- Geometric centers
+- Arbitrary spatial coordinates
+- Dynamically generated positions
+
+without requiring placeholder anchor `Transform` objects.
+
+The boolean validity flag also acts as a lifecycle boundary. Returning `false` signals that the provided coordinates are invalid or unavailable, allowing the steering system to safely ignore that coordinate update.
 
 
-## Core Updates <a name="core-updates-patch-40"></a>
-
-*Section coming next.*
 
 
-## Movement Updates <a name="movement-updates-patch-40"></a>
 
-*Section coming next.*
+--------------------------------------
+
+
 
 
 ## Combat Updates <a name="combat-updates-patch-40"></a>
