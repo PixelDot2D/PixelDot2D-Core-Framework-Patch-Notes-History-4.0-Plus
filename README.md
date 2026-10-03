@@ -1,5 +1,9 @@
 # PixelDot2D Core Framework Patch Notes History - 4.0+
 
+>[!NOTE]
+>Preview: PixelDot2D Core Framework Patch 4.0 is currently scheduled for release in mid-to-late October.
+>This patch is still undergoing final polish and testing. Minor changes may be made before release, and one additional demo scene is still being finalized.
+
 Full Patch Note History for the PixelDot2D Core Framework, beginning with **Version 4.0**.
 
 **Available on the:** [Unity Asset Store](https://assetstore.unity.com/packages/tools/utilities/pixeldot2d-core-framework-370674)
