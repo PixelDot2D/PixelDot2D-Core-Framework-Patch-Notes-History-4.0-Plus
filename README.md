@@ -28,7 +28,6 @@ Full Patch Note History for the PixelDot2D Core Framework, beginning with **Vers
     - [Unity Version Requirement](#unity-version-requirement-patch-40)
     - [Older Engine Versions](#older-engine-versions-patch-40)
   - [Core Framework & Performance](#core-framework--performance-patch-40)
-  - [Core Updates](#core-updates-patch-40)
   - [Movement Updates](#movement-updates-patch-40)
   - [Combat Updates](#combat-updates-patch-40)
   - [ModularCharacter Updates](#modularcharacter-updates-patch-40)
@@ -233,6 +232,27 @@ Developers can now provide custom spatial data such as:
 without requiring placeholder anchor `Transform` objects.
 
 The boolean validity flag also acts as a lifecycle boundary. Returning `false` signals that the provided coordinates are invalid or unavailable, allowing the steering system to safely ignore that coordinate update.
+
+### New Rotational Movement State
+
+#### `State_RB2DMovement_Rotating`
+
+Added a new ScriptableObject-driven rotational movement state.
+
+**Features:**
+
+- Configurable angular velocity.
+- Optional forward propulsion.
+- Uses `RB2DMovementManager` right-vector calculations to determine the propulsion direction.
+- Can be layered with other movement states to create complex and highly customizable movement patterns.
+
+When forward propulsion is enabled, the state uses the current right-vector calculated by `RB2DMovementManager` to determine the direction of linear movement while simultaneously applying the configured rotational velocity.
+
+A preconfigured example has been added under:
+
+Combat → SO → Weapons → Projectiles → Rotating
+
+This provides a ready-to-use reference for combining rotational movement with projectile behavior.
 
 
 
