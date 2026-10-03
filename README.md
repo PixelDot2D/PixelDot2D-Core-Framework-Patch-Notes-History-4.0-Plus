@@ -602,11 +602,68 @@ This separates projectile simulation from visual behavior while allowing visual 
 - Applies constant rotation to the projectile sprite.
 
 
+---
 
 
 ## ModularCharacter Updates <a name="modularcharacter-updates-patch-40"></a>
 
-*Section coming next.*
+### No-Code Animation Chains
+
+`Base_Data_ModularCharacter_Player` now supports context-aware, sequential animation chains entirely through ScriptableObject configuration.
+
+Developers can create multi-stage animation transitions such as:
+
+- `Descend → Land → Idle`
+- `Descend → Roll → Run`
+
+without writing any additional code.
+
+This allows complex animation workflows to be configured directly through the Unity Inspector using the existing ScriptableObject-driven architecture.
+
+---
+
+### Native Dictionary Serialization
+
+ModularCharacter data now takes advantage of native dictionary serialization.
+
+This replaces the previous rigid animation assignment structure with a more flexible lookup-based configuration, allowing state-to-state animation relationships to be defined directly within the ScriptableObject.
+
+---
+
+### Deterministic Fallback Resolution
+
+The new animation system includes multiple fallback layers to ensure that missing or incomplete animation configurations do not result in animationless states.
+
+#### Zero-Size Dictionary
+
+If the animation dictionary has zero dimensions, the system automatically falls back to the configured global fallback state asset.
+
+#### Missing Key
+
+If a specific state-to-state transition is not defined within the dictionary, the system automatically routes the transition to the configured fallback animation.
+
+This ensures that a valid animation is always available when no explicit transition has been configured.
+
+#### Internal State Handover
+
+Animation fields can remain blank when external inversion controls or explicitly managed states are responsible for controlling the visual lifecycle independently.
+
+---
+
+### ModularCharacterController Refactor
+
+The controller's internal orchestration has been streamlined and optimized.
+
+Changes include:
+
+- Removed redundant variables.
+- Simplified core orchestration logic.
+- Replaced boolean state flags with count-based list evaluation.
+- Improved long-term scalability of internal state tracking.
+
+> [!NOTE]
+> These are internal architectural changes and do not alter existing public API behavior.
+
 
 
 ## Items & Crafting Updates <a name="items--crafting-updates-patch-40"></a>
