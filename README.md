@@ -373,6 +373,82 @@ With execution locking enabled, the cooldown does not continue progressing until
 - When execution locking is disabled, the cooldown continues counting down while the execution remains active.
 - This preserves the traditional cooldown behavior, allowing the cooldown and execution processes to run in parallel.
 
+---
+
+### HitBox Execution System
+
+#### Unified `WeaponizedModule_Execution_HitBox`
+
+The following execution states have been consolidated:
+
+- `State_WeaponizedModule_Execution_CircleCast`
+- `State_WeaponizedModule_Execution_BoxCast`
+- `State_WeaponizedModule_Execution_Swing`
+- `State_WeaponizedModule_Execution_Capsule`
+
+They are now handled by a single unified execution state:
+
+`State_WeaponizedModule_Execution_HitBox`
+
+The new system uses the Core's polymorphic `CollisionManager` architecture to handle different HitBox shapes without requiring modifications to the execution class itself.
+
+**Benefits:**
+
+- One unified execution pipeline.
+- Polymorphic collision shape support.
+- Simplified future shape expansion.
+- Existing weapon ScriptableObjects have been migrated to the new configuration.
+- Legacy execution classes have been removed.
+
+---
+
+### HitBox Update Modes
+
+Added `Enum_HitBoxUpdateType` to control how HitBox position and rotation are tracked during execution.
+
+HitBoxes can now use:
+
+- **Continuous:** Continuously tracks the Virtual Transforms position and rotation.
+- **Snapshotted:** Captures the position and/or rotation at the appropriate execution point and maintains those values throughout the execution.
+
+This enables behaviors such as stationary four-laser cross patterns that lock their spawn position while continuing to rotate.
+
+The implementation's design constraints and extension guidelines are documented directly within `State_WeaponizedModule_Execution_HitBox.cs`.
+
+---
+
+### HitBox Visual Proxy Architecture
+
+Added:
+
+`Base_SO_HitBoxVisual`
+
+The new visual proxy system completely decouples HitBox rendering from the core simulation layer.
+
+Developers can inject custom visual behavior into `State_WeaponizedModule_Execution_HitBox` without modifying the core execution system or introducing event-based dependencies.
+
+Possible visual implementations include:
+
+- Standard sprites.
+- Animated sprites.
+- Rotating sprites.
+- Swinging weapons.
+- Large energy beams.
+- Custom graphical effects.
+
+This architecture allows the execution system to remain completely unaware of how its HitBox is visually represented.
+
+---
+
+### Reference Implementations
+
+Three production-ready reference configurations have been added:
+
+- **Sprite Default:** Standard sprite-based HitBox visualization.
+- **Animation:** Uses the Core's animation system for animated HitBox visuals.
+- **Rotating:** Provides a continuously rotating sprite-based visualization.
+
+
 
 
 ## ModularCharacter Updates <a name="modularcharacter-updates-patch-40"></a>
