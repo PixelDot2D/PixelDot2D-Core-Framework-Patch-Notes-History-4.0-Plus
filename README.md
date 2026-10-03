@@ -448,6 +448,159 @@ Three production-ready reference configurations have been added:
 - **Animation:** Uses the Core's animation system for animated HitBox visuals.
 - **Rotating:** Provides a continuously rotating sprite-based visualization.
 
+---
+
+### HitScan Visual Pipeline
+
+#### `PooledObject_HitScanVisual`
+
+The HitScan visual system has been completely redesigned.
+
+The pooled object now acts as a lightweight, allocation-free hardware shell.
+
+Procedural rendering and animation logic have been removed from the pooled object and moved into dedicated, preallocated C# state classes.
+
+#### HitScan Proxy Pattern
+
+Added:
+
+`Base_SO_HitScanVisual`
+
+The physics simulation is now completely independent of the visual implementation.
+
+`State_WeaponizedModule_Execution_HitScan` passes generic spatial information to the visual proxy without having any knowledge of how that information is rendered.
+
+Comprehensive XML documentation has also been added to `Base_SO_HitScanVisual`, including:
+
+- Architectural design goals.
+- Extension instructions.
+- Three-tier framework relationships.
+- Production implementation examples.
+
+---
+
+### WeaponizedModule Targeting API
+
+`SetTargetCoordinatesAction` has been updated to use:
+
+`Func<(bool isValidCoordinates, Vector2 coordinates)>`
+
+This standardizes the targeting API with the movement system.
+
+Developers can now supply:
+
+- Dynamic spatial locations.
+- Manual offsets.
+- Geometric centers.
+- Custom tracking systems.
+
+without creating dummy `GameObject` or child `Transform` objects.
+
+Returning `false` safely aborts tracking when the target becomes invalid.
+
+---
+
+### Weapon Execution Feedback
+
+`TryExecute()` and `FixedUpdate()` now return a boolean indicating whether a weapon successfully fired during that execution cycle.
+
+When using `WeaponManager`, the system returns `true` if at least one weapon successfully discharges.
+
+This allows developers to reliably track weapon firing events without implementing separate detection logic.
+
+---
+
+### `RB2DMovement_CombatManager` Lifecycle Cleanup
+
+Internal lifecycle logic has been streamlined.
+
+When a movement pattern transitions to a new outer index, the manager now preserves the existing virtual weapon configuration rather than resetting it when the two sub-scripts are identical.
+
+This prevents unnecessary weapon reinitialization and allows active execution gates—such as cooldowns—to retain their current progress.
+
+> [!NOTE]
+> No developer changes are required for this update.
+
+---
+
+### Global `IDamageable` Caching
+
+A global `ComponentCache<T>` system has been integrated into:
+
+`Base_State_WeaponizedModule_Execution`
+
+All active execution modules now share a unified lookup pool for `IDamageable` references.
+
+Secondary lookups can now be resolved through an O(1) cached lookup instead of repeatedly invoking expensive Unity component searches.
+
+#### Projectile Integration
+
+The same caching architecture has been integrated into:
+
+`Base_ProjectileCollision`
+
+Projectile impacts now route through the Weaponized Module's shared execution cache.
+
+High-velocity projectiles therefore use and contribute to the same global lookup pool.
+
+---
+
+### Memory Management Requirement
+
+The new static tracking architecture retains C# references to destroyed entities.
+
+Because Unity objects can exhibit "fake null" behavior, stale references from destroyed or transient objects can remain within static structures.
+
+Developers must therefore perform cache cleanup during appropriate lifecycle events, including:
+
+- Scene transitions.
+- Level reloads.
+- Structural garbage-collection phases.
+
+Use:
+
+```text
+WeaponizedModule.CleanCacheOfNulls();
+```
+
+This single centralized cleanup call clears stale references for both the Weaponized Module execution and projectile systems.
+
+> [!WARNING]
+> Because these caches use static tracking structures, failing to perform the required cleanup can cause destroyed object references to remain in memory.
+
+---
+
+### Projectile Architecture
+
+#### `PooledObject_Projectile`
+
+The projectile architecture has been refactored to eliminate redundant data storage.
+
+Individual primitive tracking variables have been replaced where possible with unified blueprint references, providing broader system access while reducing structural memory overhead.
+
+#### Decoupled Visual Lifecycle
+
+Sprite and visual processing has been removed from the projectile's core execution logic.
+
+Projectile visuals now operate through an independent visual state machine within `FixedUpdate`.
+
+This separates projectile simulation from visual behavior while allowing visual states to be independently configured and extended.
+
+#### Available Visual States
+
+##### `Look_At_Velocity`
+- Aligns the projectile sprite with the current velocity vector.
+- Includes optional Y-axis flipping when the projectile is traveling leftward.
+
+##### `Velocity_Sprite_Flip`
+- Tracks horizontal velocity only and uses standard X-axis sprite flipping.
+
+##### `Animation_Player_2D`
+- Plays an Animation ScriptableObject through the Core's `AnimationPlayer2D` system.
+
+##### `Continuous_Rotation`
+- Applies constant rotation to the projectile sprite.
+
 
 
 
