@@ -874,3 +874,8 @@ These interfaces allow MonoBehaviours to expose their underlying data systems wi
 
 For example, scene objects can use `TryGetComponent` to retrieve the appropriate interface and then access the underlying pure C# system without directly coupling the Unity component to the backend implementation.
 
+
+---
+### Licensing & Copyright
+*Copyright 2026 - Present © PixelDot2D - All Rights Reserved | Contact: PixelDot2D@gmail.com*
+
