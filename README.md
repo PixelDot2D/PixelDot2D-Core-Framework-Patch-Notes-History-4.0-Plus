@@ -344,7 +344,7 @@ This allows aiming behavior to remain completely decoupled from direct scene-obj
 
 Introduced a new unified execution architecture that replaces several legacy execution modules.
 
-See the dedicated **[HitBox Execution System](#hitbox-execution-system-patch-40)** section below for the full architectural breakdown.
+See the dedicated **[HitBox Execution System](#hitbox-execution-system-40)** section below for the full architectural breakdown.
 
 #### Charge Gate
 - Added a configurable charging gate that controls weapon execution based on accumulated charge.
@@ -378,7 +378,7 @@ With execution locking enabled, the cooldown does not continue progressing until
 
 ---
 
-### HitBox Execution System
+### HitBox Execution System <a name="hitbox-execution-system-40"></a>
 
 #### Unified `WeaponizedModule_Execution_HitBox`
 
