@@ -331,9 +331,9 @@ This allows aiming behavior to remain completely decoupled from direct scene-obj
 #### Clamp 8-Directional
 - Constrains placement vectors to a classic top-down eight-directional grid.
 - Comes with an Aim Mode Option for:
-  - Classic8Way - allows the classic 8 directions.
+  - Classic8Way - Allows the classic 8 directions.
   - Cross4Way - Only allows Up, Down, Right and Left.
-  - X4Way Only allows Top Right, Top Left, Bottom Right, and Bottom Left. 
+  - X4Way - Only allows Top Right, Top Left, Bottom Right, and Bottom Left. 
 
 #### Camera Position
 - Anchors a virtual execution Transform to a specified camera position.
