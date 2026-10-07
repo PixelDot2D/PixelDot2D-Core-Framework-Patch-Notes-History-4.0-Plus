@@ -373,11 +373,25 @@ Supported behaviors include:
   - Long-duration HitBox executions.
   - Delayed-delivery weapons.
 
-With execution locking enabled, the cooldown does not continue progressing until the active execution has finished.
+With execution locking enabled, the cooldown does not continue progressing until the active execution has finished. 
 
-#### Parallel Cooldowns
-- When execution locking is disabled, the cooldown continues counting down while the execution remains active.
-- This preserves the traditional cooldown behavior, allowing the cooldown and execution processes to run in parallel.
+### State_WeaponizedModule_ExecutionGate_Ammo Rework
+
+* Added `Enum_ExecutionGate_AmmoMode` to define how ammunition is managed.
+
+  * `Enum_ExecutionGate_AmmoMode.Magazine`
+
+    * Behaves like a traditional magazine-based weapon.
+    * Each execution consumes the configured amount of ammo and applies the execution cooldown before another execution can occur.
+    * When the magazine is exhausted, the ammo recovery cooldown is applied before the magazine is fully restored.
+
+  * `Enum_ExecutionGate_AmmoMode.Regenerating`
+
+    * Ammo is restored individually over time instead of restoring the entire supply at once.
+    * Each execution consumes the configured amount of ammo and applies the execution cooldown.
+    * Once ammo recovery begins, one ammo unit is restored each time the ammo recovery cooldown expires, until the maximum ammo capacity is reached.
+
+
 
 ---
 
