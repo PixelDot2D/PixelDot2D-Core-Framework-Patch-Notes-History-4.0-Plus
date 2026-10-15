@@ -913,7 +913,9 @@ For example, scene objects can use `TryGetComponent` to retrieve the appropriate
 ### New Feature: Editor Workflow & Bulk Creation <a name="editor-workflow-and-bulkcreation-patch-40"></a>
 
 **• Advanced Creation Hub:** Accessible via Right Click -> PixelDot2D -> Open Advanced Creation Hub. This centralized, searchable interface lets you navigate asset categories and create assets without digging through deeply nested menus. Selecting different folders automatically retargets the creation path. The window stays open after creation so you can generate multiple assets in succession and dock the window anywhere in your layout.
+
 **• Bulk Creation Tools:** Automates the initial setup for complex systems like ModularCharacter and Combat. It instantly generates organized folder structures, creates required ScriptableObjects and Blueprints, establishes asset references, and triggers editor validation.
+
 **• Streamlined ScriptableObject Workflow:** Drastically reduces setup friction by automating repetitive asset creation, cross-linking, and folder generation. Instead of manually wiring dozens of individual components, the bulk tools handle the heavy lifting instantly—ensuring a consistent project structure while preserving modular configuration.
 
 ---
