@@ -912,9 +912,9 @@ For example, scene objects can use `TryGetComponent` to retrieve the appropriate
 
 ### New Feature: Editor Workflow & Bulk Creation <a name="editor-workflow-and-bulkcreation-patch-40"></a>
 
-- **New Advanced Creation Hub:** Accessible via `Right Click -> PixelDot2D -> Open Advance Creation Hub`. Provides a centralized, searchable interface for navigating PixelDot2D's asset categories and creating assets without digging through deeply nested menus. Selecting different folders automatically retargets the asset creation path. The window stays open after creating assets by default, allowing you to create multiple assets in succession and dock the window in your editor workflow.
-- **Bulk Creation Tools:** Automate the initial setup of complex systems, including ModularCharacter and Combat. Generate organized folder structures, create the required ScriptableObjects and blueprints, establish asset references, and trigger editor validation where applicable.
-- **Reduced Setup Friction:** Removes over 100 clicks from some setup workflows by automating repetitive asset creation and wiring, while preserving the modular components that still require individual configuration.
+- **New Advanced Creation Hub:** Accessible via `Right Click -> PixelDot2D -> Open Advanced Creation Hub`. Provides a centralized, searchable interface for navigating PixelDot2D's asset categories and creating assets without digging through deeply nested menus. Selecting different folders automatically retargets the asset creation path. The window stays open after creating assets by default, allowing you to create multiple assets in succession and dock the window in your editor workflow.
+- **Bulk Creation Tools:** Automate the initial setup of complex systems, including ModularCharacter and Combat. Generates organized folder structures, create the required ScriptableObjects and blueprints, establish asset references, and trigger editor validation where applicable.
+- **Streamlined Workflow for ScriptableObjects:** Drastically reduces setup friction by automating repetitive asset creation, cross-linking, and folder generation. Instead of manually creating and wiring dozens of individual components, the bulk tools handle the heavy lifting instantly, ensuring a consistent project structure while preserving individual modular configuration.
 
 ---
 ### Licensing & Copyright
