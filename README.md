@@ -236,17 +236,17 @@ without requiring placeholder anchor `Transform` objects.
 
 The boolean validity flag also acts as a lifecycle boundary. Returning `false` signals that the provided coordinates are invalid or unavailable, allowing the steering system to safely ignore that coordinate update.
 
-### Animation-Synchronized Movement Sequences
+#### Animation-Synchronized Movement Sequences
 
-Updated the RB2DMovementManager method signature to optionally accept an AnimationPlayer2D reference.
+Updated the `RB2DMovementManager` method signature to optionally accept an `AnimationPlayer2D` reference.
 
-The animation player can be provided by the user or left null. The movement manager does not automatically call AnimationPlayer2D.Update(); animation updates must still be handled manually by the user.
+The animation player can be provided by the user or left `null`. The movement manager does not automatically call `AnimationPlayer2D.Update()`; animation updates must still be handled manually by the user.
 
 When an animation player is provided, the movement manager can synchronize animations with configured movement sequences.
 
-ScriptableObject Animation Integration
+#### ScriptableObject Animation Integration
 
-The movement ScriptableObject data class now supports an SO_Animation reference, allowing animations to be assigned directly to movement sequences.
+The movement ScriptableObject data class now supports an `SO_Animation` reference, allowing animations to be assigned directly to movement sequences.
 
 Movement sequences are configured through an array, allowing developers to define multi-step movement patterns—such as moving right, left, and then up—with an associated animation playing throughout the sequence.
 
