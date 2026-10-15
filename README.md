@@ -37,6 +37,7 @@ Full Patch Note History for the PixelDot2D Core Framework, beginning with **Vers
   - [ModularCharacter Updates](#modularcharacter-updates-patch-40)
   - [Items & Crafting Updates](#items--crafting-updates-patch-40)
   - [Inventory Manager Updates](#inventory-manager-updates-patch-40)
+  - [Editor Workflow & Bulk Creation](#editor-workflow-and-bulkcreation-patch-40)
 
 
 ---
@@ -905,6 +906,15 @@ These interfaces allow MonoBehaviours to expose their underlying data systems wi
 
 For example, scene objects can use `TryGetComponent` to retrieve the appropriate interface and then access the underlying pure C# system without directly coupling the Unity component to the backend implementation.
 
+
+---
+
+
+### New Feature: Editor Workflow & Bulk Creation <a name="editor-workflow-and-bulkcreation-patch-40"></a>
+
+- **New Advanced Creation Hub:** Accessible via `Right Click -> PixelDot2D -> Open Advance Creation Hub`. Provides a centralized, searchable interface for navigating PixelDot2D's asset categories and creating assets without digging through deeply nested menus. Selecting different folders automatically retargets the asset creation path. The window stays open after creating assets by default, allowing you to create multiple assets in succession and dock the window in your editor workflow.
+- **Bulk Creation Tools:** Automate the initial setup of complex systems, including ModularCharacter and Combat. Generate organized folder structures, create the required ScriptableObjects and blueprints, establish asset references, and trigger editor validation where applicable.
+- **Reduced Setup Friction:** Removes over 100 clicks from some setup workflows by automating repetitive asset creation and wiring, while preserving the modular components that still require individual configuration.
 
 ---
 ### Licensing & Copyright
