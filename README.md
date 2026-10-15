@@ -242,15 +242,13 @@ Updated the `RB2DMovementManager` method signature to optionally accept an `Anim
 
 The animation player can be provided by the user or left `null`. The movement manager does not automatically call `AnimationPlayer2D.Update()`; animation updates must still be handled manually by the user.
 
-When an animation player is provided, the movement manager can synchronize animations with configured movement sequences.
+When an animation player is provided, the movement manager synchronizes animations with configured movement sequences, automatically playing the associated animation as its corresponding sequence executes.
 
 #### ScriptableObject Animation Integration
 
-The movement ScriptableObject data class now supports an `SO_Animation` reference, allowing animations to be assigned directly to movement sequences.
+The movement ScriptableObject data class now supports an `SO_Animation` reference, allowing animations to be assigned to arrays of movement sequences.
 
-Movement sequences are configured through an array, allowing developers to define multi-step movement patterns—such as moving right, left, and then up—with an associated animation playing throughout the sequence.
-
-This enables flexible, data-driven movement and animation combinations without imposing a fixed limit on the number of configured sequence entries.
+Each array entry associates a single animation with its own array of movement sequences. This allows developers to define multi-step movement patterns—such as moving right, left, and then up—all while a single associated animation plays. Additional entries can define different animations with their own movement sequences, allowing complex, data-driven movement and animation combinations without a fixed limit on the number of configured entries or sequence steps.
 
 ### New Rotational Movement State
 
